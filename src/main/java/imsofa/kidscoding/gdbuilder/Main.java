@@ -24,6 +24,7 @@ public class Main extends javax.swing.JFrame {
         ((RSyntaxTextArea)this.code).setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_PYTHON);
         ((RSyntaxTextArea)this.code).setAutoIndentEnabled(true);
         ((RTextScrollPane)jScrollPane1).setLineNumbersEnabled(true);
+        this.setSize(1024, 600);
     }
 
     /**
@@ -38,14 +39,22 @@ public class Main extends javax.swing.JFrame {
         jSplitPane1 = new javax.swing.JSplitPane();
         jScrollPane1 = new RTextScrollPane((RSyntaxTextArea)code);
         code = new RSyntaxTextArea();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        contentTree = new javax.swing.JTree();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        jSplitPane1.setDividerLocation(300);
 
         code.setColumns(20);
         code.setRows(5);
         jScrollPane1.setViewportView(code);
 
         jSplitPane1.setRightComponent(jScrollPane1);
+
+        jScrollPane2.setViewportView(contentTree);
+
+        jSplitPane1.setLeftComponent(jScrollPane2);
 
         getContentPane().add(jSplitPane1, java.awt.BorderLayout.CENTER);
 
@@ -90,7 +99,9 @@ public class Main extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextArea code;
+    private javax.swing.JTree contentTree;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JSplitPane jSplitPane1;
     // End of variables declaration//GEN-END:variables
 }
