@@ -1,0 +1,217 @@
+options {
+  LOOKAHEAD = 1;
+  CHOICE_AMBIGUITY_CHECK = 2;
+  OTHER_AMBIGUITY_CHECK = 1;
+  STATIC = true;
+  DEBUG_PARSER = false;
+  DEBUG_LOOKAHEAD = false;
+  DEBUG_TOKEN_MANAGER = false;
+  ERROR_REPORTING = true;
+  JAVA_UNICODE_ESCAPE = false;
+  UNICODE_INPUT = false;
+  IGNORE_CASE = false;
+  USER_TOKEN_MANAGER = false;
+  USER_CHAR_STREAM = false;
+  BUILD_PARSER = true;
+  BUILD_TOKEN_MANAGER = true;
+  SANITY_CHECK = true;
+  FORCE_LA_CHECK = false;
+}
+
+PARSER_BEGIN(GDParser)
+
+package imsofa.kidscoding.gdbuilder;
+
+import java.io.*;
+import java.util.*;
+
+/** Simple brace matcher. */
+public class GDParser {
+	GD gd=new GD();
+  /** Main entry point. */
+  public static void main(String args[]) throws Exception {
+	File file=new File("test.gd");
+	BufferedReader reader=new BufferedReader(new InputStreamReader(new FileInputStream(file), "utf-8" ));
+	StringBuffer buffer=new StringBuffer();
+	String str=reader.readLine();
+	while(str!=null){
+		if(buffer.length()>0){
+			buffer.append("\r\n");
+		}
+		buffer.append(str);
+		str=reader.readLine();
+	}
+	reader.close();
+	System.out.println(buffer);
+    GDParser parser = new GDParser(new StringReader(buffer.toString()));
+    parser.Input(parser);
+    System.out.println(parser.gd.vars.size()+":"+parser.gd.functions.size());
+  }
+
+}
+
+class Function{
+	String id=null;
+	List args=new Vector();
+	String body=null;
+}
+
+class Variable{
+	String content=null;
+}
+
+class GD{
+	List vars=new Vector();
+	List functions=new Vector();
+}
+
+PARSER_END(GDParser)
+
+/* WHITE SPACE */
+
+<*> SKIP :
+{
+  " "
+| "\f"
+}
+
+<DEFAULT> TOKEN :
+{
+  <VAR_MODIFIER: ("var"|"onready")>|
+  <FUNC: "func">: FUNCTION_DECLARATION
+}
+
+<FUNCTION_DECLARATION> TOKEN:{
+  <COLON: (":")("\r")("\n")>:FUNCTION_BODY
+}
+
+<FUNCTION_BODY> TOKEN:{
+	<CODE_LINE: ("\t")(~["\r","\n"])*>|
+	<CODE_LINE_END: (("\r")?("\n"))+>|
+	<NEXT_FUNC: ("func")>: FUNCTION_DECLARATION|
+	<NEXT_VAR: ("onready")?("var")>: DEFAULT
+}
+
+<*> TOKEN:{
+  <ID: ["a"-"z","A"-"Z","_"] ( ["a"-"z","A"-"Z","_","0"-"9"] )* >|
+  <DECIMAL_LITERAL: ["1"-"9"] (["0"-"9"])* >|
+  <EXPONENT: ["e","E"] (["+","-"])? (["0"-"9"])+ >|
+  <FLOATING_POINT_LITERAL:
+        (["0"-"9"])+ "." (["0"-"9"])* (<EXPONENT>)? (["f","F","d","D"])?
+      | "." (["0"-"9"])+ (<EXPONENT>)? (["f","F","d","D"])?
+      | (["0"-"9"])+ <EXPONENT> (["f","F","d","D"])?
+      | (["0"-"9"])+ (<EXPONENT>)? ["f","F","d","D"]
+  >|
+  <STRING_LITERAL:
+      "\""
+      (   (~["\"","\\","\n","\r"])
+        | ("\\"
+            ( ["n","t","b","r","f","\\","'","\""]
+            | ["0"-"7"] ( ["0"-"7"] )?
+            | ["0"-"3"] ["0"-"7"] ["0"-"7"]
+            )
+          )
+      )*
+      "\""
+  >|
+  <LEFT_PARENTHESES: "(">|
+  <RIGHT_PARENTHESES: ")">|
+  <COMMA: ",">|
+  <ASSIGN: "=">|
+  <NEWLINE: ["\r", "\n"]>
+}
+
+
+/** Root production. */
+void Input(GDParser parser) :
+{
+	Token modifier=null;
+	Variable variable=null;
+	Function function=null;
+}
+{
+  ((modifier=<VAR_MODIFIER> variable=VarDeclaration(parser){
+		parser.gd.vars.add(variable);
+	}) | function=Function(parser){
+	})* <EOF>
+}
+
+Variable VarDeclaration(GDParser parser):
+{
+	Token id=null;
+	Token literal=null;
+	Variable var=new Variable();
+}
+{
+	id=<ID> ("=" (literal=<DECIMAL_LITERAL>|literal=<FLOATING_POINT_LITERAL>|literal=<STRING_LITERAL>))?(<NEWLINE>)*{
+		var.content=id.image;
+		if(literal!=null){
+			var.content=var.content+"="+literal.image;
+		}
+		return var;
+	}
+}
+
+Function Function(GDParser parser):
+{
+	Function function=null;
+}
+{
+	<FUNC> function=FunctionDeclaration(parser){
+		return function;
+	}
+}
+
+Function FunctionDeclaration(GDParser parser):
+{
+	String functionBody=null;
+	List args=new Vector();
+	Token id=null;
+	String arg=null;
+	Function function=new Function();
+}
+{
+	id=<ID> (<LEFT_PARENTHESES>) (arg=ARG(parser){args.add(arg);})?(<COMMA> arg=ARG(parser){args.add(arg);})* <RIGHT_PARENTHESES><COLON> (<NEWLINE>)*functionBody=FunctionBody(parser){
+		function.id=id.image;
+		function.args.addAll(args);
+		function.body=functionBody;
+		parser.gd.functions.add(function);
+		return function;
+	}
+}
+
+String FunctionBody(GDParser parser):
+{
+	Token str=null;
+	StringBuffer functionBody=new StringBuffer();
+	Variable variable=null;
+}
+{
+	(str=<CODE_LINE>{
+		if(functionBody.length()!=0){
+			functionBody.append("\r\n");
+		}
+		functionBody.append(str.image);
+	}(<CODE_LINE_END>)*)+((<NEXT_FUNC>FunctionDeclaration(parser))|(<NEXT_VAR>variable=VarDeclaration(parser){
+		parser.gd.vars.add(variable);
+	})|<EOF>)
+	{
+		return functionBody.toString();
+	}
+}
+
+String ARG(GDParser parser):
+{
+	String arg="";
+	Token id=null;
+	Token literal=null;
+}
+{
+	id=<ID> (<ASSIGN>(literal=<DECIMAL_LITERAL>|literal=<FLOATING_POINT_LITERAL>|literal=<STRING_LITERAL>))?{
+		arg=arg+id.image;
+		if(literal!=null){
+			arg=arg+"="+literal.image;
+		}
+		return arg;
+	}
+}
