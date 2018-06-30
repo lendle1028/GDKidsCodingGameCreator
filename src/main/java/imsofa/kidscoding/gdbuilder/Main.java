@@ -5,6 +5,7 @@
  */
 package imsofa.kidscoding.gdbuilder;
 
+import java.io.File;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
 import org.fife.ui.rtextarea.RTextScrollPane;
@@ -25,6 +26,10 @@ public class Main extends javax.swing.JFrame {
         ((RSyntaxTextArea)this.code).setAutoIndentEnabled(true);
         ((RTextScrollPane)jScrollPane1).setLineNumbersEnabled(true);
         this.setSize(1024, 600);
+        FileTreeModel model=new FileTreeModel(new File("/home/lendle/dev/godot_projects/godot/06-Grid-based movement"));
+        this.contentTree.setModel(model);
+        this.contentTree.setCellRenderer(new FileTreeCellRenderer());
+        this.contentTree.updateUI();
     }
 
     /**
