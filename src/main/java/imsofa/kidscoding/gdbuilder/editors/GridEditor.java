@@ -10,12 +10,15 @@ package imsofa.kidscoding.gdbuilder.editors;
  * @author lendle
  */
 public class GridEditor extends javax.swing.JPanel {
-
+    private GridModel gridModel=new GridModel();
     /**
      * Creates new form GridEditor
      */
     public GridEditor() {
         initComponents();
+        this.propsTable.setModel(new GridEditorTableModel(gridModel));
+        this.propsTable.getColumnModel().getColumn(1).setCellEditor(new GridEditorTableCellEditor());
+        this.propsTable.getColumnModel().getColumn(1).setCellRenderer(new GridEditorTableCellRenderer());
     }
 
     /**
@@ -45,6 +48,7 @@ public class GridEditor extends javax.swing.JPanel {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        propsTable.setRowHeight(25);
         jScrollPane1.setViewportView(propsTable);
 
         jTabbedPane1.addTab("Properties", jScrollPane1);

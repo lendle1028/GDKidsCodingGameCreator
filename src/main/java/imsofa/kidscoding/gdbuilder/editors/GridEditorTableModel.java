@@ -78,19 +78,26 @@ public class GridEditorTableModel extends AbstractTableModel {
         switch (rowIndex) {
                 case GRID_WIDTH:
                     this.gridModel.setGridWidth(Integer.valueOf(""+aValue));
+                    return;
                 case GRID_HEIGHT:
                     this.gridModel.setGridHeight(Integer.valueOf(""+aValue));
+                    return;
                 case TILE_WIDTH:
                     this.gridModel.setTileWidth(Integer.valueOf(""+aValue));
+                    return;
                 case TILE_HEIGHT:
                     this.gridModel.setTileHeight(Integer.valueOf(""+aValue));
+                    return;
                 case GOAL_FUNCTION:
                     this.gridModel.setGoalFunction(""+aValue);
+                    return;
                 case INIT_FUNCTION:
                     this.gridModel.setInitFunction(""+aValue);
+                    return;
                 case MAP_ENTRIES:
                     this.gridModel.getMapEntries().clear();
                     this.gridModel.getMapEntries().addAll((List)aValue);
+                    return;
             }
     }
 

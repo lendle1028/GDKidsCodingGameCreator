@@ -24,7 +24,14 @@ public class GDTextArea extends javax.swing.JPanel {
         ((RSyntaxTextArea)this.code).setAutoIndentEnabled(true);
         ((RTextScrollPane)jScrollPane1).setLineNumbersEnabled(true);
     }
-
+    
+    public String getCode(){
+        return this.code.getText();
+    }
+    
+    public void setCode(String code){
+        this.code.setText(code);
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
