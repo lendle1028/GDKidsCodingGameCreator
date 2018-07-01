@@ -33,7 +33,6 @@ public class GridEditor extends javax.swing.JPanel {
         jTabbedPane1 = new javax.swing.JTabbedPane();
         jScrollPane1 = new javax.swing.JScrollPane();
         propsTable = new javax.swing.JTable();
-        gdTextArea = new imsofa.kidscoding.gdbuilder.editors.GDTextArea();
 
         setLayout(new java.awt.BorderLayout());
 
@@ -52,14 +51,12 @@ public class GridEditor extends javax.swing.JPanel {
         jScrollPane1.setViewportView(propsTable);
 
         jTabbedPane1.addTab("Properties", jScrollPane1);
-        jTabbedPane1.addTab("Code", gdTextArea);
 
         add(jTabbedPane1, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private imsofa.kidscoding.gdbuilder.editors.GDTextArea gdTextArea;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTable propsTable;

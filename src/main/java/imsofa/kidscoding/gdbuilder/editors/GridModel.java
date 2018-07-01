@@ -21,8 +21,7 @@ public class GridModel {
     private String goalFunction = null;
     private String initFunction = null;
     private List<MapEntry> mapEntries=new ArrayList<>();
-    private List<String> vars=new ArrayList<>();
-    private List<String> functions=new ArrayList<>();
+    private String customCodes=null;
 
     public int getGridWidth() {
         return gridWidth;
@@ -80,23 +79,14 @@ public class GridModel {
         this.mapEntries = mapEntries;
     }
 
-    public List<String> getVars() {
-        return vars;
+    public String getCustomCodes() {
+        return customCodes;
     }
 
-    public void setVars(List<String> vars) {
-        this.vars = vars;
+    public void setCustomCodes(String customCodes) {
+        this.customCodes = customCodes;
     }
 
-    public List<String> getFunctions() {
-        return functions;
-    }
-
-    public void setFunctions(List<String> functions) {
-        this.functions = functions;
-    }
-    
-    
 
     static class MapEntry {
         private int gridX=-1;

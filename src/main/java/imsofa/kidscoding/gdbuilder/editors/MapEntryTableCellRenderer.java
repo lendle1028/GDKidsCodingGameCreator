@@ -17,15 +17,12 @@ import static imsofa.kidscoding.gdbuilder.editors.GridEditorTableModel.*;
  * @author lendle
  */
 public class MapEntryTableCellRenderer implements TableCellRenderer{
-    private JButton editButton=new JButton("...");
     private JButton deleteButton=new JButton("-");
     @Override
     public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
         switch (column) {
             case 4:
                 return deleteButton;
-            case 5:
-                return editButton;
         }
         return null;
     }

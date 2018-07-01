@@ -6,6 +6,7 @@
 package imsofa.kidscoding.gdbuilder.editors;
 
 import imsofa.kidscoding.gdbuilder.editors.GridModel.MapEntry;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -24,10 +25,12 @@ public class MapEntryEditorDialog extends javax.swing.JDialog {
         model.setEntries(entries);
         MapEntryTableCellEditor cellEditor=new MapEntryTableCellEditor();
         MapEntryTableCellRenderer cellRenderer=new MapEntryTableCellRenderer();
+        this.mapEntryTable.getColumnModel().getColumn(0).setCellEditor(cellEditor);
+        this.mapEntryTable.getColumnModel().getColumn(1).setCellEditor(cellEditor);
+        this.mapEntryTable.getColumnModel().getColumn(2).setCellEditor(cellEditor);
+        this.mapEntryTable.getColumnModel().getColumn(3).setCellEditor(cellEditor);
         this.mapEntryTable.getColumnModel().getColumn(4).setCellEditor(cellEditor);
-        this.mapEntryTable.getColumnModel().getColumn(5).setCellEditor(cellEditor);
         this.mapEntryTable.getColumnModel().getColumn(4).setCellRenderer(cellRenderer);
-        this.mapEntryTable.getColumnModel().getColumn(5).setCellRenderer(cellRenderer);
     }
 
     /**
@@ -47,6 +50,7 @@ public class MapEntryEditorDialog extends javax.swing.JDialog {
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         mapEntryTable.setModel(new MapEntryTableModel());
+        mapEntryTable.setRowHeight(25);
         jScrollPane1.setViewportView(mapEntryTable);
 
         getContentPane().add(jScrollPane1, java.awt.BorderLayout.CENTER);
@@ -117,7 +121,7 @@ public class MapEntryEditorDialog extends javax.swing.JDialog {
     
     public List<MapEntry> getEntries(){
         MapEntryTableModel model=(MapEntryTableModel) this.mapEntryTable.getModel();
-        return model.getEntries();
+        return new ArrayList(model.getEntries());
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

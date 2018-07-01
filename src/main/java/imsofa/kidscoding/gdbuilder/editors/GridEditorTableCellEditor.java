@@ -92,11 +92,22 @@ public class GridEditorTableCellEditor extends AbstractCellEditor implements Tab
                 return intValueEditor;
             case GOAL_FUNCTION:
             case INIT_FUNCTION:
+                String code=(String) value;
+                if(code==null || code.trim().length()==0){
+                    if(row==GOAL_FUNCTION){
+                        value="func is_goal(pos):\r\n\treturn true";
+                    }else if(row==INIT_FUNCTION){
+                        value="func initMap():\r\n\tfor entry in map:\r\n\t\tspawnObject(entry[0], entry[1], map[entry][0], map[entry][1])";
+                    }
+                }
                 this.editorValue = value;
                 return codeButton;
             case MAP_ENTRIES:
                 this.editorValue = value;
                 return mapEntriesButton;
+            case CUSTOM_CODES:
+                this.editorValue = value;
+                return codeButton;
         }
         return null;
     }

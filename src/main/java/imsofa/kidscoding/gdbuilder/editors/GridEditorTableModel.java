@@ -17,7 +17,7 @@ public class GridEditorTableModel extends AbstractTableModel {
     private GridModel gridModel = null;
 
     public static final int GRID_WIDTH = 0, GRID_HEIGHT = 1, TILE_WIDTH = 2, TILE_HEIGHT = 3, GOAL_FUNCTION = 4,
-            INIT_FUNCTION = 5, MAP_ENTRIES = 6;
+            INIT_FUNCTION = 5, MAP_ENTRIES = 6, CUSTOM_CODES=7;
 
     public GridEditorTableModel(GridModel gridModel) {
         this.gridModel = gridModel;
@@ -25,7 +25,7 @@ public class GridEditorTableModel extends AbstractTableModel {
 
     @Override
     public int getRowCount() {
-        return 7;
+        return 8;
     }
 
     @Override
@@ -51,6 +51,8 @@ public class GridEditorTableModel extends AbstractTableModel {
                     return "Init Function";
                 case MAP_ENTRIES:
                     return "Map Entries";
+                case CUSTOM_CODES:
+                    return "Custom Codes";
             }
         }else{
             switch (rowIndex) {
@@ -68,6 +70,8 @@ public class GridEditorTableModel extends AbstractTableModel {
                     return this.gridModel.getInitFunction();
                 case MAP_ENTRIES:
                     return this.gridModel.getMapEntries();
+                case CUSTOM_CODES:
+                    return this.gridModel.getCustomCodes();
             }
         }
         return null;
@@ -97,6 +101,9 @@ public class GridEditorTableModel extends AbstractTableModel {
                 case MAP_ENTRIES:
                     this.gridModel.getMapEntries().clear();
                     this.gridModel.getMapEntries().addAll((List)aValue);
+                    return;
+                case CUSTOM_CODES:
+                    this.gridModel.setCustomCodes(""+aValue);
                     return;
             }
     }

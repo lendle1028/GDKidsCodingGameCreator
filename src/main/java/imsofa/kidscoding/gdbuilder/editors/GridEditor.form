@@ -54,15 +54,6 @@
             </Component>
           </SubComponents>
         </Container>
-        <Component class="imsofa.kidscoding.gdbuilder.editors.GDTextArea" name="gdTextArea">
-          <Constraints>
-            <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
-              <JTabbedPaneConstraints tabName="Code">
-                <Property name="tabTitle" type="java.lang.String" value="Code"/>
-              </JTabbedPaneConstraints>
-            </Constraint>
-          </Constraints>
-        </Component>
       </SubComponents>
     </Container>
   </SubComponents>

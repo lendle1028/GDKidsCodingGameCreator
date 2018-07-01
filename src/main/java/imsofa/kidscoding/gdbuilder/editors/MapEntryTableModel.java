@@ -39,7 +39,7 @@ public class MapEntryTableModel extends AbstractTableModel{
 
     @Override
     public int getColumnCount() {
-        return 6;
+        return 5;
     }
 
     @Override
@@ -51,14 +51,13 @@ public class MapEntryTableModel extends AbstractTableModel{
             case 2: return entry.getName();
             case 3: return entry.getObjectGDPath();
             case 4: return entry;
-            case 5: return entry;
         }
         return null;
     }
 
     @Override
     public boolean isCellEditable(int rowIndex, int columnIndex) {
-        return columnIndex==4 || columnIndex==5;
+        return true;
     }
 
     @Override
@@ -69,10 +68,29 @@ public class MapEntryTableModel extends AbstractTableModel{
             case 2: return "Name";
             case 3: return "GD Path";
             case 4: return "";
-            case 5: return "";
         }
         return null;
     }
+
+    @Override
+    public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
+        MapEntry entry=this.entries.get(rowIndex);
+        switch(columnIndex){
+            case 0:
+                entry.setGridX(Integer.valueOf(""+aValue));
+                return;
+            case 1:
+                entry.setGridY(Integer.valueOf(""+aValue));
+                return;
+            case 2:
+                entry.setName(""+aValue);
+                return;
+            case 3:
+                entry.setObjectGDPath(""+aValue);
+                return;
+        }
+    }
+    
     
     
 }

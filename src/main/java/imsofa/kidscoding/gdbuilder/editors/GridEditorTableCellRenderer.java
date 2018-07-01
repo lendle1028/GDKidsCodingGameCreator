@@ -33,6 +33,8 @@ public class GridEditorTableCellRenderer implements TableCellRenderer{
                 return complexValueRenderer;
             case MAP_ENTRIES:
                 return complexValueRenderer;
+            case CUSTOM_CODES:
+                return complexValueRenderer;
         }
         return null;
     }
