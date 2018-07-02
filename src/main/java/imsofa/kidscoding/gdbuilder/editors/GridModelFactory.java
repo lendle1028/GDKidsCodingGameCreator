@@ -6,6 +6,8 @@
 package imsofa.kidscoding.gdbuilder.editors;
 
 import imsofa.kidscoding.gdbuilder.GDParser;
+import imsofa.kidscoding.gdbuilder.GDParser.Function;
+import imsofa.kidscoding.gdbuilder.GDParser.Variable;
 import imsofa.kidscoding.gdbuilder.ParseException;
 import imsofa.kidscoding.gdbuilder.editors.GridModel.MapEntry;
 import java.io.StringReader;
@@ -16,35 +18,44 @@ import java.util.List;
  * @author lendle
  */
 public class GridModelFactory {
-    public static String model2Code(GridModel model){
-        StringBuffer buffer=new StringBuffer();
+
+    public static String model2Code(GridModel model) {
+        StringBuffer buffer = new StringBuffer();
         buffer.append("extends 'res://GridBase.gd'\r\n");
-        if(model.getCustomCodes()!=null){
-            buffer.append(model.getCustomCodes()+"\r\n");
+        if (model.getCustomCodes() != null) {
+            buffer.append(model.getCustomCodes() + "\r\n");
         }
         buffer.append("var map={\r\n");
-        List<MapEntry> entries=model.getMapEntries();
-        for(int i=0; entries!=null && i<entries.size(); i++){
-            MapEntry entry=entries.get(i);
+        List<MapEntry> entries = model.getMapEntries();
+        for (int i = 0; entries != null && i < entries.size(); i++) {
+            MapEntry entry = entries.get(i);
             buffer.append(String.format("\t[%d,%d]:[\"%s\",\"%s\"]\r\n", entry.getGridX(), entry.getGridY(),
                     entry.getObjectGDPath(), entry.getName()));
         }
         buffer.append("}\r\n");
-        buffer.append(model.getInitFunction()+"\r\n");
-        buffer.append(model.getGoalFunction()+"\r\n");
+        buffer.append(model.getInitFunction() + "\r\n");
+        buffer.append(model.getGoalFunction() + "\r\n");
         buffer.append(String.format("func getGridSize():\r\n\treturn Vector2(%d, %d)\r\n", model.getGridWidth(), model.getGridHeight()));
         buffer.append(String.format("func getTileSize():\r\n\treturn Vector2(%d, %d)\r\n", model.getTileWidth(), model.getTileHeight()));
-        
+
         return buffer.toString();
     }
-    
-    public static GridModel code2Model(String code) throws ParseException{
-        GridModel model=new GridModel();
-        if(code.startsWith("extends ")){
-            code=code.substring(code.indexOf('\n')+1);
+
+    public static GridModel code2Model(String code) throws ParseException {
+        GridModel model = new GridModel();
+        if (code.startsWith("extends ")) {
+            code = code.substring(code.indexOf('\n') + 1);
         }
-        GDParser parser=new GDParser(new StringReader(code));
+        GDParser parser = new GDParser(new StringReader(code));
         parser.Input(parser);
+        for (int i = 0; i < parser.gd.vars.size(); i++) {
+            Variable var = (Variable) parser.gd.vars.get(i);
+            System.out.println(var.content);
+        }
+        for (int i = 0; i < parser.gd.functions.size(); i++) {
+            Function f = (Function) parser.gd.functions.get(i);
+            System.out.println(f.id);
+        }
         return model;
     }
 }

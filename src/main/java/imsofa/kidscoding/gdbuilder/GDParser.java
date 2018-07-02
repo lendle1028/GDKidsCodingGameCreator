@@ -6,7 +6,7 @@ import java.util.*;
 
 /** Simple brace matcher. */
 public class GDParser implements GDParserConstants {
-        GD gd=new GD();
+        public GD gd=new GD();
   /** Main entry point. */
   public static void main(String args[]) throws Exception {
         File file=new File("test.gd");
@@ -34,6 +34,21 @@ public class GDParser implements GDParserConstants {
                 Function f=(Function)parser.gd.functions.get(i);
                 System.out.println(f.id);
     }
+  }
+
+  public static class Function{
+        public String id=null;
+        public List args=new Vector();
+        public String body=null;
+  }
+
+  public static class Variable{
+        public String content=null;
+  }
+
+  public static class GD{
+        public List vars=new Vector();
+        public List functions=new Vector();
   }
 
 /** Root production. */
@@ -543,19 +558,4 @@ public class GDParser implements GDParserConstants {
   static final public void disable_tracing() {
   }
 
-}
-
-class Function{
-        String id=null;
-        List args=new Vector();
-        String body=null;
-}
-
-class Variable{
-        String content=null;
-}
-
-class GD{
-        List vars=new Vector();
-        List functions=new Vector();
 }
