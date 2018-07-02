@@ -15,50 +15,70 @@ public interface GDParserConstants {
   /** RegularExpression Id. */
   int FUNC = 4;
   /** RegularExpression Id. */
-  int COLON = 5;
+  int FIRST_VAR_LINE = 5;
   /** RegularExpression Id. */
-  int CODE_LINE = 6;
+  int NEW_VAR_LINE = 6;
   /** RegularExpression Id. */
-  int CODE_LINE_END = 7;
+  int NEXT_FUNC_IN_VAR = 7;
   /** RegularExpression Id. */
-  int NEXT_FUNC = 8;
+  int NEXT_VAR_IN_VAR = 8;
   /** RegularExpression Id. */
-  int NEXT_VAR = 9;
+  int END_BRACKET = 9;
   /** RegularExpression Id. */
-  int ID = 10;
+  int END_CURLY_BRACKET = 10;
   /** RegularExpression Id. */
-  int DECIMAL_LITERAL = 11;
+  int COLON = 11;
   /** RegularExpression Id. */
-  int EXPONENT = 12;
+  int CODE_LINE = 12;
   /** RegularExpression Id. */
-  int FLOATING_POINT_LITERAL = 13;
+  int CODE_LINE_END = 13;
   /** RegularExpression Id. */
-  int STRING_LITERAL = 14;
+  int NEXT_FUNC = 14;
   /** RegularExpression Id. */
-  int LEFT_PARENTHESES = 15;
+  int NEXT_VAR = 15;
   /** RegularExpression Id. */
-  int RIGHT_PARENTHESES = 16;
+  int ID = 16;
   /** RegularExpression Id. */
-  int COMMA = 17;
+  int DECIMAL_LITERAL = 17;
   /** RegularExpression Id. */
-  int ASSIGN = 18;
+  int EXPONENT = 18;
   /** RegularExpression Id. */
-  int NEWLINE = 19;
+  int FLOATING_POINT_LITERAL = 19;
+  /** RegularExpression Id. */
+  int STRING_LITERAL = 20;
+  /** RegularExpression Id. */
+  int LEFT_PARENTHESES = 21;
+  /** RegularExpression Id. */
+  int RIGHT_PARENTHESES = 22;
+  /** RegularExpression Id. */
+  int COMMA = 23;
+  /** RegularExpression Id. */
+  int ASSIGN = 24;
+  /** RegularExpression Id. */
+  int NEWLINE = 25;
 
   /** Lexical state. */
   int FUNCTION_BODY = 0;
   /** Lexical state. */
   int FUNCTION_DECLARATION = 1;
   /** Lexical state. */
-  int DEFAULT = 2;
+  int VAR_DECLARATION = 2;
+  /** Lexical state. */
+  int DEFAULT = 3;
 
   /** Literal token values. */
   String[] tokenImage = {
     "<EOF>",
     "\" \"",
     "\"\\f\"",
-    "<VAR_MODIFIER>",
+    "\"var\"",
     "\"func\"",
+    "<FIRST_VAR_LINE>",
+    "<NEW_VAR_LINE>",
+    "\"func\"",
+    "<NEXT_VAR_IN_VAR>",
+    "\"]\"",
+    "\"}\"",
     "<COLON>",
     "<CODE_LINE>",
     "<CODE_LINE_END>",

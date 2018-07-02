@@ -46,6 +46,15 @@ public class GDParser {
     GDParser parser = new GDParser(new StringReader(buffer.toString()));
     parser.Input(parser);
     System.out.println(parser.gd.vars.size()+":"+parser.gd.functions.size());
+    System.out.println("===================================");
+    for(int i=0; i<parser.gd.vars.size(); i++){
+		Variable var=(Variable)parser.gd.vars.get(i);
+		System.out.println(var.content);
+    }
+    for(int i=0; i<parser.gd.functions.size(); i++){
+		Function f=(Function)parser.gd.functions.get(i);
+		System.out.println(f.id);
+    }
   }
 
 }
@@ -77,8 +86,18 @@ PARSER_END(GDParser)
 
 <DEFAULT> TOKEN :
 {
-  <VAR_MODIFIER: ("var"|"onready")>|
+  <VAR_MODIFIER: "var">: VAR_DECLARATION|
   <FUNC: "func">: FUNCTION_DECLARATION
+}
+
+<VAR_DECLARATION> TOKEN:
+{
+	<FIRST_VAR_LINE: ("=")(~["\r","\n"])+>|
+	<NEW_VAR_LINE: ("\t")(~["\r","\n"])*>|
+	<NEXT_FUNC_IN_VAR: ("func")>: FUNCTION_DECLARATION|
+	<NEXT_VAR_IN_VAR: ("onready")?("var")>: VAR_DECLARATION|
+	<END_BRACKET: ("]")>|
+	<END_CURLY_BRACKET: ("}")>
 }
 
 <FUNCTION_DECLARATION> TOKEN:{
@@ -89,7 +108,7 @@ PARSER_END(GDParser)
 	<CODE_LINE: ("\t")(~["\r","\n"])*>|
 	<CODE_LINE_END: (("\r")?("\n"))+>|
 	<NEXT_FUNC: ("func")>: FUNCTION_DECLARATION|
-	<NEXT_VAR: ("onready")?("var")>: DEFAULT
+	<NEXT_VAR: ("onready")?("var")>: VAR_DECLARATION
 }
 
 <*> TOKEN:{
@@ -131,23 +150,38 @@ void Input(GDParser parser) :
 }
 {
   ((modifier=<VAR_MODIFIER> variable=VarDeclaration(parser){
-		parser.gd.vars.add(variable);
+		//parser.gd.vars.add(variable);
 	}) | function=Function(parser){
-	})* <EOF>
+	})* <EOF>{
+		List temp=new ArrayList();
+		temp.addAll(parser.gd.vars);
+		parser.gd.vars.clear();
+		while(!temp.isEmpty()){
+			parser.gd.vars.add(temp.remove(temp.size()-1));
+		}
+		
+		temp=new ArrayList();
+		temp.addAll(parser.gd.functions);
+		parser.gd.functions.clear();
+		while(!temp.isEmpty()){
+			parser.gd.functions.add(temp.remove(temp.size()-1));
+		}
+	}
 }
 
 Variable VarDeclaration(GDParser parser):
 {
+	StringBuffer buffer=new StringBuffer();
 	Token id=null;
 	Token literal=null;
 	Variable var=new Variable();
+	Variable nextVar=null;
+	Token t=null;
 }
 {
-	id=<ID> ("=" (literal=<DECIMAL_LITERAL>|literal=<FLOATING_POINT_LITERAL>|literal=<STRING_LITERAL>))?(<NEWLINE>)*{
-		var.content=id.image;
-		if(literal!=null){
-			var.content=var.content+"="+literal.image;
-		}
+	(id=<ID> t=<FIRST_VAR_LINE>{buffer.append(id).append(t.image);} (<NEWLINE>)* (t=<NEW_VAR_LINE>{buffer.append("\r\n").append(t.image);}(<NEWLINE>)+)*((<END_CURLY_BRACKET>{buffer.append("\r\n").append("}");}((<NEWLINE>)*|<EOF>))|(<END_BRACKET>{buffer.append("\r\n").append("]");}((<NEWLINE>)*|<EOF>)))?((<NEXT_FUNC_IN_VAR>FunctionDeclaration(parser))|(<NEXT_VAR_IN_VAR>nextVar=VarDeclaration(parser){/*parser.gd.vars.add(nextVar);*/})|<EOF>)){
+		var.content=buffer.toString();
+		parser.gd.vars.add(var);
 		return var;
 	}
 }
@@ -193,7 +227,7 @@ String FunctionBody(GDParser parser):
 		}
 		functionBody.append(str.image);
 	}(<CODE_LINE_END>)*)+((<NEXT_FUNC>FunctionDeclaration(parser))|(<NEXT_VAR>variable=VarDeclaration(parser){
-		parser.gd.vars.add(variable);
+		//parser.gd.vars.add(variable);
 	})|<EOF>)
 	{
 		return functionBody.toString();

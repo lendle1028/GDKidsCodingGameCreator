@@ -21,10 +21,19 @@ public class GDParser implements GDParserConstants {
                 str=reader.readLine();
         }
         reader.close();
-        //System.out.println(buffer);
+        System.out.println(buffer);
     GDParser parser = new GDParser(new StringReader(buffer.toString()));
     parser.Input(parser);
-    //System.out.println(parser.gd.vars.size()+":"+parser.gd.functions.size());
+    System.out.println(parser.gd.vars.size()+":"+parser.gd.functions.size());
+    System.out.println("===================================");
+    for(int i=0; i<parser.gd.vars.size(); i++){
+                Variable var=(Variable)parser.gd.vars.get(i);
+                System.out.println(var.content);
+    }
+    for(int i=0; i<parser.gd.functions.size(); i++){
+                Function f=(Function)parser.gd.functions.get(i);
+                System.out.println(f.id);
+    }
   }
 
 /** Root production. */
@@ -47,7 +56,7 @@ public class GDParser implements GDParserConstants {
       case VAR_MODIFIER:
         modifier = jj_consume_token(VAR_MODIFIER);
         variable = VarDeclaration(parser);
-                parser.gd.vars.add(variable);
+
         break;
       case FUNC:
         function = Function(parser);
@@ -60,36 +69,31 @@ public class GDParser implements GDParserConstants {
       }
     }
     jj_consume_token(0);
+                List temp=new ArrayList();
+                temp.addAll(parser.gd.vars);
+                parser.gd.vars.clear();
+                while(!temp.isEmpty()){
+                        parser.gd.vars.add(temp.remove(temp.size()-1));
+                }
+
+                temp=new ArrayList();
+                temp.addAll(parser.gd.functions);
+                parser.gd.functions.clear();
+                while(!temp.isEmpty()){
+                        parser.gd.functions.add(temp.remove(temp.size()-1));
+                }
   }
 
   static final public Variable VarDeclaration(GDParser parser) throws ParseException {
+        StringBuffer buffer=new StringBuffer();
         Token id=null;
         Token literal=null;
         Variable var=new Variable();
+        Variable nextVar=null;
+        Token t=null;
     id = jj_consume_token(ID);
-    switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-    case ASSIGN:
-      jj_consume_token(ASSIGN);
-      switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-      case DECIMAL_LITERAL:
-        literal = jj_consume_token(DECIMAL_LITERAL);
-        break;
-      case FLOATING_POINT_LITERAL:
-        literal = jj_consume_token(FLOATING_POINT_LITERAL);
-        break;
-      case STRING_LITERAL:
-        literal = jj_consume_token(STRING_LITERAL);
-        break;
-      default:
-        jj_la1[2] = jj_gen;
-        jj_consume_token(-1);
-        throw new ParseException();
-      }
-      break;
-    default:
-      jj_la1[3] = jj_gen;
-      ;
-    }
+    t = jj_consume_token(FIRST_VAR_LINE);
+                                    buffer.append(id).append(t.image);
     label_2:
     while (true) {
       switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
@@ -97,15 +101,102 @@ public class GDParser implements GDParserConstants {
         ;
         break;
       default:
-        jj_la1[4] = jj_gen;
+        jj_la1[2] = jj_gen;
         break label_2;
       }
       jj_consume_token(NEWLINE);
     }
-                var.content=id.image;
-                if(literal!=null){
-                        var.content=var.content+"="+literal.image;
-                }
+    label_3:
+    while (true) {
+      switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+      case NEW_VAR_LINE:
+        ;
+        break;
+      default:
+        jj_la1[3] = jj_gen;
+        break label_3;
+      }
+      t = jj_consume_token(NEW_VAR_LINE);
+                                                                                                       buffer.append("\u005cr\u005cn").append(t.image);
+      label_4:
+      while (true) {
+        jj_consume_token(NEWLINE);
+        switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+        case NEWLINE:
+          ;
+          break;
+        default:
+          jj_la1[4] = jj_gen;
+          break label_4;
+        }
+      }
+    }
+    switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+    case END_BRACKET:
+    case END_CURLY_BRACKET:
+      switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+      case END_CURLY_BRACKET:
+        jj_consume_token(END_CURLY_BRACKET);
+                                                                                                                                                                                  buffer.append("\u005cr\u005cn").append("}");
+        label_5:
+        while (true) {
+          switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+          case NEWLINE:
+            ;
+            break;
+          default:
+            jj_la1[5] = jj_gen;
+            break label_5;
+          }
+          jj_consume_token(NEWLINE);
+        }
+        break;
+      case END_BRACKET:
+        jj_consume_token(END_BRACKET);
+                                                                                                                                                                                                                                                          buffer.append("\u005cr\u005cn").append("]");
+        label_6:
+        while (true) {
+          switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+          case NEWLINE:
+            ;
+            break;
+          default:
+            jj_la1[6] = jj_gen;
+            break label_6;
+          }
+          jj_consume_token(NEWLINE);
+        }
+        break;
+      default:
+        jj_la1[7] = jj_gen;
+        jj_consume_token(-1);
+        throw new ParseException();
+      }
+      break;
+    default:
+      jj_la1[8] = jj_gen;
+      ;
+    }
+    switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+    case NEXT_FUNC_IN_VAR:
+      jj_consume_token(NEXT_FUNC_IN_VAR);
+      FunctionDeclaration(parser);
+      break;
+    case NEXT_VAR_IN_VAR:
+      jj_consume_token(NEXT_VAR_IN_VAR);
+      nextVar = VarDeclaration(parser);
+
+      break;
+    case 0:
+      jj_consume_token(0);
+      break;
+    default:
+      jj_la1[9] = jj_gen;
+      jj_consume_token(-1);
+      throw new ParseException();
+    }
+                var.content=buffer.toString();
+                parser.gd.vars.add(var);
                 {if (true) return var;}
     throw new Error("Missing return statement in function");
   }
@@ -132,18 +223,18 @@ public class GDParser implements GDParserConstants {
                                                       args.add(arg);
       break;
     default:
-      jj_la1[5] = jj_gen;
+      jj_la1[10] = jj_gen;
       ;
     }
-    label_3:
+    label_7:
     while (true) {
       switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
       case COMMA:
         ;
         break;
       default:
-        jj_la1[6] = jj_gen;
-        break label_3;
+        jj_la1[11] = jj_gen;
+        break label_7;
       }
       jj_consume_token(COMMA);
       arg = ARG(parser);
@@ -151,15 +242,15 @@ public class GDParser implements GDParserConstants {
     }
     jj_consume_token(RIGHT_PARENTHESES);
     jj_consume_token(COLON);
-    label_4:
+    label_8:
     while (true) {
       switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
       case NEWLINE:
         ;
         break;
       default:
-        jj_la1[7] = jj_gen;
-        break label_4;
+        jj_la1[12] = jj_gen;
+        break label_8;
       }
       jj_consume_token(NEWLINE);
     }
@@ -176,22 +267,22 @@ public class GDParser implements GDParserConstants {
         Token str=null;
         StringBuffer functionBody=new StringBuffer();
         Variable variable=null;
-    label_5:
+    label_9:
     while (true) {
       str = jj_consume_token(CODE_LINE);
                 if(functionBody.length()!=0){
                         functionBody.append("\u005cr\u005cn");
                 }
                 functionBody.append(str.image);
-      label_6:
+      label_10:
       while (true) {
         switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
         case CODE_LINE_END:
           ;
           break;
         default:
-          jj_la1[8] = jj_gen;
-          break label_6;
+          jj_la1[13] = jj_gen;
+          break label_10;
         }
         jj_consume_token(CODE_LINE_END);
       }
@@ -200,8 +291,8 @@ public class GDParser implements GDParserConstants {
         ;
         break;
       default:
-        jj_la1[9] = jj_gen;
-        break label_5;
+        jj_la1[14] = jj_gen;
+        break label_9;
       }
     }
     switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
@@ -212,13 +303,13 @@ public class GDParser implements GDParserConstants {
     case NEXT_VAR:
       jj_consume_token(NEXT_VAR);
       variable = VarDeclaration(parser);
-                parser.gd.vars.add(variable);
+
       break;
     case 0:
       jj_consume_token(0);
       break;
     default:
-      jj_la1[10] = jj_gen;
+      jj_la1[15] = jj_gen;
       jj_consume_token(-1);
       throw new ParseException();
     }
@@ -245,13 +336,13 @@ public class GDParser implements GDParserConstants {
         literal = jj_consume_token(STRING_LITERAL);
         break;
       default:
-        jj_la1[11] = jj_gen;
+        jj_la1[16] = jj_gen;
         jj_consume_token(-1);
         throw new ParseException();
       }
       break;
     default:
-      jj_la1[12] = jj_gen;
+      jj_la1[17] = jj_gen;
       ;
     }
                 arg=arg+id.image;
@@ -272,13 +363,13 @@ public class GDParser implements GDParserConstants {
   static public Token jj_nt;
   static private int jj_ntk;
   static private int jj_gen;
-  static final private int[] jj_la1 = new int[13];
+  static final private int[] jj_la1 = new int[18];
   static private int[] jj_la1_0;
   static {
       jj_la1_init_0();
    }
    private static void jj_la1_init_0() {
-      jj_la1_0 = new int[] {0x18,0x18,0x6800,0x40000,0x80000,0x400,0x20000,0x80000,0x80,0x40,0x301,0x6800,0x40000,};
+      jj_la1_0 = new int[] {0x18,0x18,0x2000000,0x40,0x2000000,0x2000000,0x2000000,0x600,0x600,0x181,0x10000,0x800000,0x2000000,0x2000,0x1000,0xc001,0x1a0000,0x1000000,};
    }
 
   /** Constructor with InputStream. */
@@ -299,7 +390,7 @@ public class GDParser implements GDParserConstants {
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 13; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 18; i++) jj_la1[i] = -1;
   }
 
   /** Reinitialise. */
@@ -313,7 +404,7 @@ public class GDParser implements GDParserConstants {
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 13; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 18; i++) jj_la1[i] = -1;
   }
 
   /** Constructor. */
@@ -330,7 +421,7 @@ public class GDParser implements GDParserConstants {
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 13; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 18; i++) jj_la1[i] = -1;
   }
 
   /** Reinitialise. */
@@ -340,7 +431,7 @@ public class GDParser implements GDParserConstants {
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 13; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 18; i++) jj_la1[i] = -1;
   }
 
   /** Constructor with generated Token Manager. */
@@ -356,7 +447,7 @@ public class GDParser implements GDParserConstants {
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 13; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 18; i++) jj_la1[i] = -1;
   }
 
   /** Reinitialise. */
@@ -365,7 +456,7 @@ public class GDParser implements GDParserConstants {
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 13; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 18; i++) jj_la1[i] = -1;
   }
 
   static private Token jj_consume_token(int kind) throws ParseException {
@@ -416,12 +507,12 @@ public class GDParser implements GDParserConstants {
   /** Generate ParseException. */
   static public ParseException generateParseException() {
     jj_expentries.clear();
-    boolean[] la1tokens = new boolean[20];
+    boolean[] la1tokens = new boolean[26];
     if (jj_kind >= 0) {
       la1tokens[jj_kind] = true;
       jj_kind = -1;
     }
-    for (int i = 0; i < 13; i++) {
+    for (int i = 0; i < 18; i++) {
       if (jj_la1[i] == jj_gen) {
         for (int j = 0; j < 32; j++) {
           if ((jj_la1_0[i] & (1<<j)) != 0) {
@@ -430,7 +521,7 @@ public class GDParser implements GDParserConstants {
         }
       }
     }
-    for (int i = 0; i < 20; i++) {
+    for (int i = 0; i < 26; i++) {
       if (la1tokens[i]) {
         jj_expentry = new int[1];
         jj_expentry[0] = i;
