@@ -7,6 +7,8 @@ package imsofa.kidscoding.gdbuilder.editors;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import org.apache.commons.io.FileUtils;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
@@ -16,25 +18,45 @@ import org.fife.ui.rtextarea.RTextScrollPane;
  *
  * @author lendle
  */
-public class GDTextArea extends javax.swing.JPanel implements GDFileEditor{
-    private boolean modified=false;
+public class GDTextArea extends javax.swing.JPanel implements GDFileEditor {
+
+    private boolean modified = false;
+    private String originalText = null;
+    private List<ModifiedListener> modifiedListeners = new ArrayList<>();
+
+    @Override
+    public void addModifiedListener(ModifiedListener l) {
+        modifiedListeners.add(l);
+    }
+
+    @Override
+    public void removeModifiedListener(ModifiedListener l) {
+        modifiedListeners.remove(l);
+    }
+
     /**
      * Creates new form GDTextArea
      */
     public GDTextArea() {
         initComponents();
-        ((RSyntaxTextArea)this.code).setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_PYTHON);
-        ((RSyntaxTextArea)this.code).setAutoIndentEnabled(true);
-        ((RTextScrollPane)jScrollPane1).setLineNumbersEnabled(true);
+        ((RSyntaxTextArea) this.code).setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_PYTHON);
+        ((RSyntaxTextArea) this.code).setAutoIndentEnabled(true);
+        ((RTextScrollPane) jScrollPane1).setLineNumbersEnabled(true);
     }
     
-    public String getCode(){
+    public void setModified(boolean modified) {
+        this.modified = modified;
+    }
+
+    public String getCode() {
         return this.code.getText();
     }
-    
-    public void setCode(String code){
+
+    public void setCode(String code) {
+        originalText = code;
         this.code.setText(code);
     }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -51,9 +73,14 @@ public class GDTextArea extends javax.swing.JPanel implements GDFileEditor{
 
         code.setColumns(20);
         code.setRows(5);
-        code.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
-            public void propertyChange(java.beans.PropertyChangeEvent evt) {
-                codePropertyChange(evt);
+        code.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                codeFocusLost(evt);
+            }
+        });
+        code.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                codeKeyPressed(evt);
             }
         });
         jScrollPane1.setViewportView(code);
@@ -61,12 +88,25 @@ public class GDTextArea extends javax.swing.JPanel implements GDFileEditor{
         add(jScrollPane1, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void codePropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_codePropertyChange
+    private void codeFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_codeFocusLost
         // TODO add your handling code here:
-        if(evt.getPropertyName().equals("text")){
-            modified=true;
+        if (code.getText().equals(originalText) == false) {
+            modified = true;
+            for (ModifiedListener l : modifiedListeners) {
+                l.modified();
+            }
         }
-    }//GEN-LAST:event_codePropertyChange
+    }//GEN-LAST:event_codeFocusLost
+
+    private void codeKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_codeKeyPressed
+        // TODO add your handling code here:
+        if (code.getText().equals(originalText) == false) {
+            modified = true;
+            for (ModifiedListener l : modifiedListeners) {
+                l.modified();
+            }
+        }
+    }//GEN-LAST:event_codeKeyPressed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -77,9 +117,9 @@ public class GDTextArea extends javax.swing.JPanel implements GDFileEditor{
     @Override
     public void init(File gdFile) {
         try {
-            String code=FileUtils.readFileToString(gdFile, "utf-8");
+            String code = FileUtils.readFileToString(gdFile, "utf-8");
             this.setCode(code);
-            modified=false;
+            modified = false;
         } catch (IOException ex) {
             ex.printStackTrace();
         }

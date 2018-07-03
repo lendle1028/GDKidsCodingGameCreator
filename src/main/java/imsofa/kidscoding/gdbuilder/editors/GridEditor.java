@@ -6,6 +6,8 @@
 package imsofa.kidscoding.gdbuilder.editors;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.SwingUtilities;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
@@ -18,6 +20,22 @@ import org.apache.commons.io.FileUtils;
 public class GridEditor extends javax.swing.JPanel implements GDFileEditor{
     private GridModel gridModel=null;
     private boolean modified=false;
+    private List<ModifiedListener> modifiedListeners=new ArrayList<>();
+    @Override
+    public void addModifiedListener(ModifiedListener l) {
+        modifiedListeners.add(l);
+    }
+
+    @Override
+    public void removeModifiedListener(ModifiedListener l) {
+        modifiedListeners.remove(l);
+    }
+
+    public void setModified(boolean modified) {
+        this.modified = modified;
+    }
+    
+    
     /**
      * Creates new form GridEditor
      */
@@ -86,6 +104,9 @@ public class GridEditor extends javax.swing.JPanel implements GDFileEditor{
                 @Override
                 public void tableChanged(TableModelEvent e) {
                     modified=true;
+                    for(ModifiedListener l : modifiedListeners){
+                        l.modified();
+                    }
                 }
             });
             modified=false;
@@ -104,6 +125,11 @@ public class GridEditor extends javax.swing.JPanel implements GDFileEditor{
 
     @Override
     public boolean isModified() {
-        return true;
+        return modified;
+    }
+
+    @Override
+    public String getCode() {
+        return GridModelFactory.model2Code(gridModel);
     }
 }

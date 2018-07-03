@@ -14,4 +14,12 @@ import java.io.File;
 public interface GDFileEditor {
     public void init(File gdFile);
     public boolean isModified();
+    public void setModified(boolean modified);
+    public String getCode();
+    public void addModifiedListener(ModifiedListener l);
+    public void removeModifiedListener(ModifiedListener l);
+    
+    public static interface ModifiedListener{
+        public void modified();
+    }
 }
