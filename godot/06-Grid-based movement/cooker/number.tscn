@@ -1,0 +1,22 @@
+[gd_scene load_steps=3 format=1]
+
+[ext_resource path="res://cooker/number.png" type="Texture" id=1]
+
+[sub_resource type="SpriteFrames" id=1]
+
+animations = [ {
+"frames": [ ExtResource( 1 ), null, ExtResource( 1 ), null, ExtResource( 1 ), null, ExtResource( 1 ), null, ExtResource( 1 ), null, ExtResource( 1 ) ],
+"loop": false,
+"name": "default",
+"speed": 5.0
+} ]
+
+[node name="Node2D" type="Node2D"]
+
+[node name="AnimatedSprite" type="AnimatedSprite" parent="."]
+
+transform/scale = Vector2( 0.259853, 0.259853 )
+frames = SubResource( 1 )
+animation = "default"
+
+

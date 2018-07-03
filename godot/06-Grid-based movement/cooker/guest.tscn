@@ -1,0 +1,16 @@
+[gd_scene load_steps=2 format=1]
+
+[ext_resource path="res://cooker/restaurant.png" type="Texture" id=1]
+
+[node name="Node2D" type="Node2D"]
+
+transform/pos = Vector2( 16, 7 )
+transform/scale = Vector2( 0.8, 1 )
+
+[node name="restaurant" type="Sprite" parent="."]
+
+transform/pos = Vector2( -1.04366, 1.20633 )
+transform/scale = Vector2( 0.239211, 0.239211 )
+texture = ExtResource( 1 )
+
+

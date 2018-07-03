@@ -1,0 +1,50 @@
+[gd_scene load_steps=3 format=1]
+
+[ext_resource path="res://2.tex" type="Texture" id=1]
+[ext_resource path="res://2.gd" type="Script" id=2]
+
+[node name="TextureFrame" type="TextureFrame"]
+
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 0.0
+margin/top = -11.0
+margin/right = 800.0
+margin/bottom = 589.0
+texture = ExtResource( 1 )
+stretch_mode = 0
+script/script = ExtResource( 2 )
+
+[node name="A" type="Button" parent="."]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 639.0
+margin/top = 477.0
+margin/right = 733.0
+margin/bottom = 544.0
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+flat = false
+
+[node name="B" type="Button" parent="."]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 63.0
+margin/top = 479.0
+margin/right = 157.0
+margin/bottom = 544.0
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+flat = false
+
+

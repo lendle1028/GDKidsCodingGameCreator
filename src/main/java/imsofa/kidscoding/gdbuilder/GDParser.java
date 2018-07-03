@@ -28,7 +28,7 @@ public class GDParser implements GDParserConstants {
     System.out.println("===================================");
     for(int i=0; i<parser.gd.vars.size(); i++){
                 Variable var=(Variable)parser.gd.vars.get(i);
-                System.out.println(var.content);
+                System.out.println(var.id);
     }
     for(int i=0; i<parser.gd.functions.size(); i++){
                 Function f=(Function)parser.gd.functions.get(i);
@@ -43,6 +43,7 @@ public class GDParser implements GDParserConstants {
   }
 
   public static class Variable{
+        public String id=null;
         public String content=null;
   }
 
@@ -211,6 +212,7 @@ public class GDParser implements GDParserConstants {
       throw new ParseException();
     }
                 var.content=buffer.toString();
+                var.id=id.image;
                 parser.gd.vars.add(var);
                 {if (true) return var;}
     throw new Error("Missing return statement in function");

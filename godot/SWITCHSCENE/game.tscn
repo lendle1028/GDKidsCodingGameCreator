@@ -1,0 +1,51 @@
+[gd_scene load_steps=3 format=1]
+
+[ext_resource path="res://1.tex" type="Texture" id=1]
+[ext_resource path="res://game.gd" type="Script" id=2]
+
+[node name="1" type="TextureFrame"]
+
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 0.0
+margin/top = 0.0
+margin/right = 800.0
+margin/bottom = 600.0
+texture = ExtResource( 1 )
+expand = true
+stretch_mode = 0
+script/script = ExtResource( 2 )
+
+[node name="Button" type="Button" parent="."]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 648.0
+margin/top = 489.0
+margin/right = 761.0
+margin/bottom = 570.0
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+flat = false
+
+[node name="Button 2" type="Button" parent="."]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 37.0
+margin/top = 485.0
+margin/right = 168.0
+margin/bottom = 561.0
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+flat = false
+
+

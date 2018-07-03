@@ -1,0 +1,28 @@
+[gd_scene load_steps=3 format=1]
+
+[ext_resource path="res://cooker/Obstacle_1.png" type="Texture" id=1]
+
+[sub_resource type="SpriteFrames" id=1]
+
+animations = [ {
+"frames": [ ExtResource( 1 ), null, ExtResource( 1 ), null, ExtResource( 1 ), null, ExtResource( 1 ), null, ExtResource( 1 ), null, ExtResource( 1 ) ],
+"loop": false,
+"name": "default",
+"speed": 5.0
+} ]
+
+[node name="Obstacle" type="Node2D"]
+
+transform/pos = Vector2( 51.5513, 46.7651 )
+transform/scale = Vector2( 0.8, 0.8 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="AnimatedSprite" type="AnimatedSprite" parent="."]
+
+transform/pos = Vector2( 15, 1 )
+frames = SubResource( 1 )
+animation = "default"
+
+

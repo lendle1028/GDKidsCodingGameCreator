@@ -1,0 +1,171 @@
+[gd_scene load_steps=10 format=1]
+
+[ext_resource path="res://maze/pic/cooltext288520941673734_resized.png" type="Texture" id=1]
+[ext_resource path="res://maze/pic/cooltext288520991024003_resized.png" type="Texture" id=2]
+[ext_resource path="res://maze/pic/cooltext288521017088699_resized.png" type="Texture" id=3]
+[ext_resource path="res://maze/pic/cooltext288521064336462_resized.png" type="Texture" id=4]
+[ext_resource path="res://maze/pic/cooltext288521467882643_resized.png" type="Texture" id=5]
+[ext_resource path="res://maze/pic/cooltext288521339966884_resized.png" type="Texture" id=6]
+[ext_resource path="res://maze/pic/cooltext288521361848730_resized.png" type="Texture" id=7]
+[ext_resource path="res://maze/pic/cooltext288521217351771_resized.png" type="Texture" id=8]
+[ext_resource path="res://maze/pic/cooltext288521540608128_resized.png" type="Texture" id=9]
+
+[node name="Node2D" type="Node2D"]
+
+transform/pos = Vector2( 201.403, 103.219 )
+
+[node name="up" type="Button" parent="."]
+
+rect/scale = Vector2( 0.7, 0.7 )
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = -11.0
+margin/top = -22.0
+margin/right = 101.0
+margin/bottom = 84.0
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+icon = ExtResource( 1 )
+flat = true
+
+[node name="down" type="Button" parent="."]
+
+rect/scale = Vector2( 0.7, 0.7 )
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = -11.0
+margin/top = 121.0
+margin/right = 101.0
+margin/bottom = 227.0
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+icon = ExtResource( 2 )
+flat = true
+
+[node name="left" type="Button" parent="."]
+
+rect/scale = Vector2( 0.7, 0.7 )
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = -86.0
+margin/top = 53.0
+margin/right = 26.0
+margin/bottom = 159.0
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+icon = ExtResource( 3 )
+flat = true
+
+[node name="right" type="Button" parent="."]
+
+rect/scale = Vector2( 0.7, 0.7 )
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 65.0
+margin/top = 51.0
+margin/right = 177.0
+margin/bottom = 157.0
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+icon = ExtResource( 4 )
+flat = true
+
+[node name="start" type="Button" parent="."]
+
+rect/scale = Vector2( 0.8, 0.7 )
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = -81.0
+margin/top = 293.0
+margin/right = 31.0
+margin/bottom = 379.0
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+icon = ExtResource( 5 )
+flat = true
+
+[node name="block_start" type="Button" parent="."]
+
+rect/scale = Vector2( 0.7, 0.7 )
+hint/tooltip = "開始區塊"
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = -87.0
+margin/top = 204.0
+margin/right = 25.0
+margin/bottom = 310.0
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+icon = ExtResource( 6 )
+flat = true
+
+[node name="block_end" type="Button" parent="."]
+
+rect/scale = Vector2( 0.7, 0.7 )
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 69.0
+margin/top = 202.0
+margin/right = 181.0
+margin/bottom = 308.0
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+icon = ExtResource( 7 )
+flat = true
+
+[node name="reuse" type="Button" parent="."]
+
+rect/scale = Vector2( 0.7, 0.7 )
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = -8.0
+margin/top = 202.0
+margin/right = 104.0
+margin/bottom = 308.0
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+icon = ExtResource( 8 )
+flat = true
+
+[node name="back" type="Button" parent="."]
+
+rect/scale = Vector2( 0.8, 0.7 )
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 56.0
+margin/top = 292.0
+margin/right = 168.0
+margin/bottom = 378.0
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+icon = ExtResource( 9 )
+flat = true
+
+

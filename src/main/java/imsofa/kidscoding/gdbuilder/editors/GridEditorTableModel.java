@@ -25,6 +25,9 @@ public class GridEditorTableModel extends AbstractTableModel {
 
     @Override
     public int getRowCount() {
+        if(gridModel==null){
+            return 0;
+        }
         return 8;
     }
 
@@ -79,6 +82,7 @@ public class GridEditorTableModel extends AbstractTableModel {
 
     @Override
     public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
+        this.fireTableDataChanged();
         switch (rowIndex) {
                 case GRID_WIDTH:
                     this.gridModel.setGridWidth(Integer.valueOf(""+aValue));

@@ -5,17 +5,31 @@
  */
 package imsofa.kidscoding.gdbuilder.editors;
 
+import java.io.File;
+import javax.swing.SwingUtilities;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
+import org.apache.commons.io.FileUtils;
+
 /**
  *
  * @author lendle
  */
-public class GridEditor extends javax.swing.JPanel {
-    private GridModel gridModel=new GridModel();
+public class GridEditor extends javax.swing.JPanel implements GDFileEditor{
+    private GridModel gridModel=null;
+    private boolean modified=false;
     /**
      * Creates new form GridEditor
      */
     public GridEditor() {
         initComponents();
+//        try {
+//            String code=FileUtils.readFileToString(new File("test.gd"), "utf-8");
+//
+//            gridModel=GridModelFactory.code2Model(code);
+//        } catch (Exception ex) {
+//            ex.printStackTrace();
+//        }
         this.propsTable.setModel(new GridEditorTableModel(gridModel));
         this.propsTable.getColumnModel().getColumn(1).setCellEditor(new GridEditorTableCellEditor());
         this.propsTable.getColumnModel().getColumn(1).setCellRenderer(new GridEditorTableCellRenderer());
@@ -61,4 +75,35 @@ public class GridEditor extends javax.swing.JPanel {
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTable propsTable;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void init(File gdFile) {
+        try {
+            String code=FileUtils.readFileToString(gdFile, "utf-8");
+            gridModel=GridModelFactory.code2Model(code);
+            this.propsTable.setModel(new GridEditorTableModel(gridModel));
+            propsTable.getModel().addTableModelListener(new TableModelListener() {
+                @Override
+                public void tableChanged(TableModelEvent e) {
+                    modified=true;
+                }
+            });
+            modified=false;
+            this.propsTable.getColumnModel().getColumn(1).setCellEditor(new GridEditorTableCellEditor());
+            this.propsTable.getColumnModel().getColumn(1).setCellRenderer(new GridEditorTableCellRenderer());
+            SwingUtilities.invokeLater(new Runnable(){
+                @Override
+                public void run() {
+                    propsTable.updateUI();
+                }
+            });
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    @Override
+    public boolean isModified() {
+        return true;
+    }
 }

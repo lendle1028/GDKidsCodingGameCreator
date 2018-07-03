@@ -5,6 +5,9 @@
  */
 package imsofa.kidscoding.gdbuilder.editors;
 
+import java.io.File;
+import java.io.IOException;
+import org.apache.commons.io.FileUtils;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
 import org.fife.ui.rtextarea.RTextScrollPane;
@@ -13,8 +16,8 @@ import org.fife.ui.rtextarea.RTextScrollPane;
  *
  * @author lendle
  */
-public class GDTextArea extends javax.swing.JPanel {
-
+public class GDTextArea extends javax.swing.JPanel implements GDFileEditor{
+    private boolean modified=false;
     /**
      * Creates new form GDTextArea
      */
@@ -48,14 +51,42 @@ public class GDTextArea extends javax.swing.JPanel {
 
         code.setColumns(20);
         code.setRows(5);
+        code.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                codePropertyChange(evt);
+            }
+        });
         jScrollPane1.setViewportView(code);
 
         add(jScrollPane1, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void codePropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_codePropertyChange
+        // TODO add your handling code here:
+        if(evt.getPropertyName().equals("text")){
+            modified=true;
+        }
+    }//GEN-LAST:event_codePropertyChange
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextArea code;
     private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void init(File gdFile) {
+        try {
+            String code=FileUtils.readFileToString(gdFile, "utf-8");
+            this.setCode(code);
+            modified=false;
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    @Override
+    public boolean isModified() {
+        return modified;
+    }
 }

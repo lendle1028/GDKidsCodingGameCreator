@@ -5,11 +5,12 @@
  */
 package imsofa.kidscoding.gdbuilder;
 
+import imsofa.kidscoding.gdbuilder.editors.GDFileEditor;
+import imsofa.kidscoding.gdbuilder.editors.GDFileEditorFactory;
 import java.io.File;
-import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
-import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
-import org.fife.ui.rtextarea.RTextScrollPane;
-
+import java.io.IOException;
+import javax.swing.JComponent;
+import javax.swing.SwingUtilities;
 
 /**
  *
@@ -17,13 +18,15 @@ import org.fife.ui.rtextarea.RTextScrollPane;
  */
 public class Main extends javax.swing.JFrame {
 
+    private File editingFile = null;
+
     /**
      * Creates new form NewJFrame
      */
     public Main() {
         initComponents();
         this.setSize(1024, 600);
-        FileTreeModel model=new FileTreeModel(new File("/home/lendle/dev/godot_projects/godot/06-Grid-based movement"));
+        FileTreeModel model = new FileTreeModel(new File("godot"));
         this.contentTree.setModel(model);
         this.contentTree.setCellRenderer(new FileTreeCellRenderer());
         this.contentTree.updateUI();
@@ -41,21 +44,55 @@ public class Main extends javax.swing.JFrame {
         jSplitPane1 = new javax.swing.JSplitPane();
         jScrollPane2 = new javax.swing.JScrollPane();
         contentTree = new javax.swing.JTree();
-        gridEditor1 = new imsofa.kidscoding.gdbuilder.editors.GridEditor();
+        editorContainer = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jSplitPane1.setDividerLocation(300);
 
+        contentTree.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                contentTreeMouseClicked(evt);
+            }
+        });
         jScrollPane2.setViewportView(contentTree);
 
         jSplitPane1.setLeftComponent(jScrollPane2);
-        jSplitPane1.setRightComponent(gridEditor1);
+
+        editorContainer.setLayout(new java.awt.BorderLayout());
+        jSplitPane1.setRightComponent(editorContainer);
 
         getContentPane().add(jSplitPane1, java.awt.BorderLayout.CENTER);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void contentTreeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_contentTreeMouseClicked
+        // TODO add your handling code here:
+        if (evt.getClickCount() == 2) {
+            try {
+                File file = (File) contentTree.getSelectionPath().getLastPathComponent();
+                if (editorContainer.getComponentCount() != 0) {
+                    editorContainer.removeAll();
+                }
+
+                if (file.getName().endsWith(".gd")) {
+                    GDFileEditor editor = GDFileEditorFactory.getEditor(file);
+                    editor.init(file);
+                    editorContainer.add((JComponent) editor);
+                    SwingUtilities.invokeLater(new Runnable() {
+                        @Override
+                        public void run() {
+                            editorContainer.revalidate();
+                            editorContainer.repaint();
+                        }
+                    });
+                }
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        }
+    }//GEN-LAST:event_contentTreeMouseClicked
 
     /**
      * @param args the command line arguments
@@ -95,7 +132,7 @@ public class Main extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTree contentTree;
-    private imsofa.kidscoding.gdbuilder.editors.GridEditor gridEditor1;
+    private javax.swing.JPanel editorContainer;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JSplitPane jSplitPane1;
     // End of variables declaration//GEN-END:variables

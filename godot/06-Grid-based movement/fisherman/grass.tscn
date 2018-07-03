@@ -1,0 +1,15 @@
+[gd_scene load_steps=2 format=1]
+
+[ext_resource path="res://fisherman/PIC/Coccinelle-sur-brin-d-herbe-Ladybird-on-blade-of-grass_resized.png" type="Texture" id=1]
+
+[node name="Node2D" type="Node2D"]
+
+transform/scale = Vector2( 0.5, 0.5 )
+
+[node name="Obstacle_3" type="Sprite" parent="."]
+
+transform/pos = Vector2( 1, 1 )
+transform/scale = Vector2( 1.5, 1.2 )
+texture = ExtResource( 1 )
+
+

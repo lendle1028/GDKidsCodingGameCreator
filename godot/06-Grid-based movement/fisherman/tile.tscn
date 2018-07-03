@@ -1,0 +1,81 @@
+[gd_scene load_steps=11 format=1]
+
+[ext_resource path="res://fisherman/tilesets/mines/B1.jpg" type="Texture" id=1]
+[ext_resource path="res://fisherman/tilesets/mines/B1.png" type="Texture" id=2]
+[ext_resource path="res://fisherman/tilesets/mines/background.png" type="Texture" id=3]
+[ext_resource path="res://fisherman/tilesets/mines/Bl2.jpg" type="Texture" id=4]
+[ext_resource path="res://fisherman/tilesets/mines/W1 (2).jpg" type="Texture" id=5]
+[ext_resource path="res://fisherman/tilesets/mines/圖片1_resized.png" type="Texture" id=6]
+[ext_resource path="res://fisherman/tilesets/mines/圖片2_resized.png" type="Texture" id=7]
+[ext_resource path="res://fisherman/tilesets/mines/圖片3_resized.png" type="Texture" id=8]
+[ext_resource path="res://fisherman/tilesets/mines/floor.png" type="Texture" id=9]
+[ext_resource path="res://fisherman/PIC/Waves-Pattern_resized.png" type="Texture" id=10]
+
+[node name="Node2D" type="Node2D"]
+
+[node name="Sprite" type="Sprite" parent="."]
+
+transform/pos = Vector2( 548.824, 347.421 )
+texture = ExtResource( 1 )
+region = true
+region_rect = Rect2( 0, 0, 65, 65 )
+
+[node name="Sprite 2" type="Sprite" parent="."]
+
+transform/pos = Vector2( 767.85, 284.482 )
+texture = ExtResource( 2 )
+region = true
+region_rect = Rect2( 0, 0, 65, 65 )
+
+[node name="Sprite 3" type="Sprite" parent="."]
+
+transform/pos = Vector2( 722.534, 390.219 )
+texture = ExtResource( 3 )
+region = true
+region_rect = Rect2( 0, 0, 65, 65 )
+
+[node name="Sprite 4" type="Sprite" parent="."]
+
+transform/pos = Vector2( 606.727, 191.333 )
+texture = ExtResource( 4 )
+region = true
+region_rect = Rect2( 0, 0, 65, 65 )
+
+[node name="Sprite 5" type="Sprite" parent="."]
+
+transform/pos = Vector2( 898.762, 473.298 )
+texture = ExtResource( 5 )
+region = true
+region_rect = Rect2( 0, 0, 65, 65 )
+
+[node name="Sprite 6" type="Sprite" parent="."]
+
+transform/pos = Vector2( 672.183, 483.368 )
+texture = ExtResource( 6 )
+region_rect = Rect2( 0, 0, 65, 65 )
+
+[node name="Sprite 7" type="Sprite" parent="."]
+
+transform/pos = Vector2( 795.543, 563.929 )
+texture = ExtResource( 7 )
+
+[node name="Sprite 8" type="Sprite" parent="."]
+
+transform/pos = Vector2( 946.595, 586.587 )
+texture = ExtResource( 8 )
+
+[node name="Sprite 9" type="Sprite" parent="."]
+
+transform/pos = Vector2( 266.859, 284.482 )
+texture = ExtResource( 9 )
+region = true
+region_rect = Rect2( 0, 0, 65, 65 )
+
+[node name="Sprite 10" type="Sprite" parent="."]
+
+transform/pos = Vector2( 365.043, 478.333 )
+texture = ExtResource( 10 )
+region = true
+region_rect = Rect2( 0, 0, 65, 65 )
+
+
