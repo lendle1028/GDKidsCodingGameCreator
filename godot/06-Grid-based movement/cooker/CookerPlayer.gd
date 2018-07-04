@@ -3,7 +3,7 @@ extends 'res://GridObject.gd'
 var pickupedObjects=[]
 var target_direction = Vector2()
 var target_pos = Vector2()
-const MAX_SPEED = 400
+var MAX_SPEED = 400
 var speed = 0
 var velocity = Vector2()
 var action=null
@@ -57,13 +57,11 @@ func tick(delta):
 		var pos = node.get_pos()
 		var distance_to_target = pos.distance_to(target_pos)
 		var move_distance = velocity.length()
-		#以下判斷動作是否執行完了，是的話才執行排在下一個的動作
 		if move_distance > distance_to_target:
 			velocity = target_direction * distance_to_target
 			global.gameStatus="idle"
 		node.move(velocity)
 		if(global.gameStatus=="idle"):
-			#update pos
 			grid.removeObject(self)
 			var newGridPos=grid.getMapPos(node.get_pos().x, node.get_pos().y)
 			#collecting objects in the grid

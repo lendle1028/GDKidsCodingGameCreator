@@ -18,6 +18,8 @@ public class GDFileEditorFactory {
         String content=FileUtils.readFileToString(file, "utf-8");
         if(content.trim().startsWith("extends 'res://GridBase.gd'")){
             return new GridEditor();
+        }else if(content.trim().startsWith("extends 'res://GridObject.gd'")){
+            return new GridObjectEditor();
         }else{
             return new GDTextArea();
         }
